@@ -43,7 +43,9 @@ export function InfiniteCanvas() {
   storeRef.current = store;
 
   const pan = useMemo(() => PanResponder.create({
-    onMoveShouldSetPanResponder: (_, gesture) => storeRef.current.isNavigating || Math.hypot(gesture.dx, gesture.dy) > 18,
+    // Let child Pressables claim taps; steal the gesture once user is clearly dragging
+    onStartShouldSetPanResponder: () => false,
+    onMoveShouldSetPanResponder: (_, gesture) => Math.hypot(gesture.dx, gesture.dy) > 8,
     onPanResponderGrant: () => { start.current = storeRef.current.canvasOffset; storeRef.current.setNavigating(true, { x: 0, y: 0 }); },
     onPanResponderMove: (_, gesture) => {
       const s = storeRef.current;
@@ -99,7 +101,7 @@ export function InfiniteCanvas() {
 
   return (
     <View style={styles.root}>
-      <CanvasBackground />
+      <CanvasBackground offsetX={store.canvasOffset.x} offsetY={store.canvasOffset.y} />
       <NavigationTrail direction={store.navigationDirection} color={store.activeColor} />
       <View style={styles.header}>
         <View style={styles.brand}>
