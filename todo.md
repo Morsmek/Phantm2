@@ -1,0 +1,27 @@
+# Project TODO
+
+- [x] Replace tab navigation with a spatial root canvas experience.
+- [x] Match the provided frontend reference: Void Black radial-grid background, Space Grotesk-inspired typography, top PHANTM brand bar, Neutral context chip, faint distant nest dots, concentric orbital rings, Spectral Cyan glow, central node pulse, and bottom navigation hint.
+- [x] Implement local CanvasState and NestRecord schemas with AsyncStorage persistence.
+- [x] Build reusable canvas components: InfiniteCanvas, CanvasBackground, NestNode, RingLayer, SlotArc, NestDot, and NavigationTrail.
+- [x] Implement hold-center then drag canvas navigation with snap-to-nearest-nest behaviour.
+- [x] Implement pinch-style zoom controls where feasible within the Expo scaffold.
+- [x] Implement long-distance navigation acceleration and travel trail feedback.
+- [x] Build seven-step onboarding walkthrough.
+- [x] Build Main Nest Setup with nest naming and at least one slot assignment before entering the canvas.
+- [x] Build module modal sheet container over dimmed canvas.
+- [x] Implement Notes module with local note creation and editing.
+- [x] Implement Voice module UI for recording/playback management with safe platform handling.
+- [x] Implement Quick Capture module with local capture list.
+- [x] Implement Timer/Pomodoro module with focus intervals and haptic-friendly controls.
+- [x] Implement Browser module as an offline-safe URL launcher/in-app browser flow where supported.
+- [x] Implement Workflow Runner module with local animated workflow steps.
+- [x] Build Nest Editor for ring/slot configuration and nest metadata.
+- [x] Implement hidden nest password gate flow.
+- [x] Implement shareable nest export/import through JSON text.
+- [x] Implement nest-link slots that navigate to another nest.
+- [x] Build Settings screen for preferences, reset walkthrough, export/import, and app guidance.
+- [x] Apply PHANTM dark design tokens in theme and app screens.
+- [x] Generate and apply a custom PHANTM app icon and branding metadata.
+- [x] Validate TypeScript, app health, and core user flows.
+- [x] Prepare project checkpoint so APK can be generated through the Publish flow.
