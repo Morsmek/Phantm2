@@ -25,3 +25,5 @@
 - [x] Generate and apply a custom PHANTM app icon and branding metadata.
 - [x] Validate TypeScript, app health, and core user flows.
 - [x] Prepare project checkpoint so APK can be generated through the Publish flow.
+- [x] Fix reported issue: app looks correct but core functionality and user flows are not working reliably.
+- [x] Audit and repair onboarding Continue actions, setup completion, canvas node interaction, module launch actions, editor saves, import/export, and local persistence.
