@@ -21,8 +21,8 @@ export function SlotArc({ slot, size, angle, accent, onPress }: { slot: SlotConf
 }
 
 const styles = StyleSheet.create({
-  slot: { position: 'absolute', left: '50%', top: '50%', width: 48, height: 48, marginLeft: -24, marginTop: -24, borderRadius: 24, borderWidth: 1, alignItems: 'center', justifyContent: 'center', shadowColor: '#39D5FF', shadowOpacity: 0.22, shadowRadius: 12 },
-  pressed: { opacity: 0.75, transform: [{ scale: 0.96 }] },
-  emptyDot: { width: 5, height: 5, borderRadius: 3, backgroundColor: '#86939844' },
-  label: { position: 'absolute', top: 52, fontSize: 9, fontWeight: '700', letterSpacing: 1, textTransform: 'uppercase', opacity: 0.72 },
+  slot: { position: 'absolute', left: '50%', top: '50%', width: 64, height: 64, marginLeft: -32, marginTop: -32, borderRadius: 32, borderWidth: 1.5, alignItems: 'center', justifyContent: 'center', shadowColor: '#39D5FF', shadowOpacity: 0.22, shadowRadius: 12 },
+  pressed: { opacity: 0.75, transform: [{ scale: 0.93 }] },
+  emptyDot: { width: 6, height: 6, borderRadius: 3, backgroundColor: '#86939844' },
+  label: { position: 'absolute', top: 68, fontSize: 10, fontWeight: '700', letterSpacing: 0.8, textTransform: 'uppercase', opacity: 0.72 },
 });

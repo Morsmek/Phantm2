@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
@@ -24,8 +24,17 @@ export default function EditNestScreen() {
   const [password, setPassword] = useState('');
   const [selected, setSelected] = useState<SelectedSlot>({ ringIndex: 1, slotIndex: 0 });
   const [status, setStatus] = useState('Select a slot, then assign a module, nest link, or empty state.');
+  const [assignVersion, setAssignVersion] = useState(0);
 
-  const selectedSlot = useMemo(() => nest?.rings.find((ring) => ring.ringIndex === selected.ringIndex)?.slots.find((slot) => slot.slotIndex === selected.slotIndex), [nest, selected]);
+  useEffect(() => {
+    if (nest) {
+      setLabel(nest.label);
+      setContext(nest.context ?? 'Neutral');
+      setType(nest.type ?? 'open');
+    }
+  }, [nest?.id, nest?.updatedAt]);
+
+  const selectedSlot = useMemo(() => nest?.rings.find((ring) => ring.ringIndex === selected.ringIndex)?.slots.find((slot) => slot.slotIndex === selected.slotIndex), [nest, selected, assignVersion]);
 
   if (!nest) {
     return (
@@ -51,6 +60,7 @@ export default function EditNestScreen() {
   function assignModule(moduleId: ModuleId) {
     const next = moduleSlot(selected.slotIndex, moduleId);
     store.assignSlot(currentNest.id, selected.ringIndex, selected.slotIndex, next);
+    setAssignVersion((v) => v + 1);
     setStatus(`${MODULE_LABELS[moduleId]} assigned to ring ${selected.ringIndex}, slot ${selected.slotIndex + 1}.`);
   }
 
@@ -58,11 +68,13 @@ export default function EditNestScreen() {
     const target = store.nests.find((item) => item.id === targetNestId);
     const next: SlotConfig = { slotIndex: selected.slotIndex, type: 'nest-link', targetNestId, label: target?.label ?? 'Linked Nest', iconKey: 'hub' };
     store.assignSlot(currentNest.id, selected.ringIndex, selected.slotIndex, next);
+    setAssignVersion((v) => v + 1);
     setStatus(`Linked slot to ${target?.label ?? 'another nest'}.`);
   }
 
   function clearSlot() {
     store.assignSlot(currentNest.id, selected.ringIndex, selected.slotIndex, emptySlot(selected.slotIndex));
+    setAssignVersion((v) => v + 1);
     setStatus('Slot cleared.');
   }
 

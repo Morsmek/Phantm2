@@ -19,6 +19,7 @@ export default function UnlockNest() {
       return;
     }
     if (!nest.passwordHash || nest.passwordHash === hashPassword(pw)) {
+      store.setCanvasOffset(nest.position);
       store.setActiveNest(nest.id);
       router.replace('/');
       return;

@@ -40,7 +40,8 @@ export function InfiniteCanvas() {
   const [status, setStatus] = useState('Ready');
 
   const pan = useMemo(() => PanResponder.create({
-    onMoveShouldSetPanResponder: (_, gesture) => store.isNavigating || Math.hypot(gesture.dx, gesture.dy) > 18,
+    onStartShouldSetPanResponder: () => true,
+    onMoveShouldSetPanResponder: (_, gesture) => Math.hypot(gesture.dx, gesture.dy) > 6,
     onPanResponderGrant: () => { start.current = store.canvasOffset; store.setNavigating(true, { x: 0, y: 0 }); },
     onPanResponderMove: (_, gesture) => {
       const speed = 1 + Math.min(2.4, Math.hypot(gesture.dx, gesture.dy) / 160);
@@ -50,10 +51,12 @@ export function InfiniteCanvas() {
     onPanResponderRelease: (_, gesture) => {
       const projected = { x: start.current.x - gesture.dx, y: start.current.y - gesture.dy };
       const hit = nearestNest(store.nests.filter((nest) => nest.type !== 'hidden'), projected, 260);
-      if (hit) {
+      if (hit && hit.id !== store.activeNestId) {
         store.setActiveNest(hit.id);
         setStatus(`Focused ${hit.label}`);
         phantmHaptics.confirm();
+      } else if (hit) {
+        setStatus(`At ${hit.label}`);
       } else {
         setStatus('Canvas moved');
       }
@@ -120,8 +123,6 @@ export function InfiniteCanvas() {
             nest={active}
             accent={store.activeColor}
             scale={store.canvasScale * (store.isNavigating ? 0.86 : 1)}
-            onNavigateStart={() => { store.setNavigating(true, { x: 0, y: 0 }); setStatus('Drag anywhere to move canvas'); }}
-            onNavigateEnd={() => store.setNavigating(false, null)}
             onSlotPress={slotPress}
           />
         ) : <Text style={styles.empty}>No nest yet. Complete setup to begin.</Text>}
