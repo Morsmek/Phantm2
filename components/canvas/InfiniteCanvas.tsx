@@ -39,28 +39,33 @@ export function InfiniteCanvas() {
   const [showAddNest, setShowAddNest] = useState(false);
   const [status, setStatus] = useState('Ready');
 
+  const storeRef = useRef(store);
+  storeRef.current = store;
+
   const pan = useMemo(() => PanResponder.create({
-    onMoveShouldSetPanResponder: (_, gesture) => store.isNavigating || Math.hypot(gesture.dx, gesture.dy) > 18,
-    onPanResponderGrant: () => { start.current = store.canvasOffset; store.setNavigating(true, { x: 0, y: 0 }); },
+    onMoveShouldSetPanResponder: (_, gesture) => storeRef.current.isNavigating || Math.hypot(gesture.dx, gesture.dy) > 18,
+    onPanResponderGrant: () => { start.current = storeRef.current.canvasOffset; storeRef.current.setNavigating(true, { x: 0, y: 0 }); },
     onPanResponderMove: (_, gesture) => {
+      const s = storeRef.current;
       const speed = 1 + Math.min(2.4, Math.hypot(gesture.dx, gesture.dy) / 160);
-      store.setCanvasOffset({ x: start.current.x - gesture.dx * speed, y: start.current.y - gesture.dy * speed });
-      store.setNavigating(true, { x: gesture.dx, y: gesture.dy });
+      s.setCanvasOffset({ x: start.current.x - gesture.dx * speed, y: start.current.y - gesture.dy * speed });
+      s.setNavigating(true, { x: gesture.dx, y: gesture.dy });
     },
     onPanResponderRelease: (_, gesture) => {
+      const s = storeRef.current;
       const projected = { x: start.current.x - gesture.dx, y: start.current.y - gesture.dy };
-      const hit = nearestNest(store.nests.filter((nest) => nest.type !== 'hidden'), projected, 260);
+      const hit = nearestNest(s.nests.filter((nest) => nest.type !== 'hidden'), projected, 260);
       if (hit) {
-        store.setActiveNest(hit.id);
+        s.setActiveNest(hit.id);
         setStatus(`Focused ${hit.label}`);
         phantmHaptics.confirm();
       } else {
         setStatus('Canvas moved');
       }
-      store.setNavigating(false, null);
+      s.setNavigating(false, null);
     },
-    onPanResponderTerminate: () => store.setNavigating(false, null),
-  }), [store]);
+    onPanResponderTerminate: () => storeRef.current.setNavigating(false, null),
+  }), []);
 
   function slotPress(slot: SlotConfig) {
     phantmHaptics.confirm();

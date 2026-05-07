@@ -12,7 +12,17 @@ export function SlotArc({ slot, size, angle, accent, onPress }: { slot: SlotConf
       accessibilityRole="button"
       accessibilityLabel={slot.label}
       onPress={onPress}
-      style={({ pressed }) => [styles.slot, { transform: [{ translateX: x }, { translateY: y }], borderColor: active ? `${accent}55` : '#86939822', backgroundColor: active ? '#0E1417CC' : '#0E141766' }, pressed && styles.pressed]}
+      style={({ pressed }) => [
+        styles.slot,
+        {
+          transform: pressed
+            ? [{ translateX: x }, { translateY: y }, { scale: 0.96 }]
+            : [{ translateX: x }, { translateY: y }],
+          borderColor: active ? `${accent}55` : '#86939822',
+          backgroundColor: active ? '#0E1417CC' : '#0E141766',
+          opacity: pressed ? 0.75 : 1,
+        },
+      ]}
     >
       {active ? <MaterialIcons name={(slot.iconKey as any) ?? 'radio-button-unchecked'} size={22} color={accent} /> : <View style={styles.emptyDot} />}
       {active ? <Text numberOfLines={1} style={[styles.label, { color: accent }]}>{slot.label}</Text> : null}
